@@ -4,6 +4,7 @@ import org.example.crochetbusiness.entity.Product;
 import org.example.crochetbusiness.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -28,6 +29,10 @@ public class ProductService {
 
     public Optional<Product> findProductByID(long id){
         return productRepository.findById(id);
+    }
+
+    public List<Product> findAllProducts(){
+        return productRepository.findAll();
     }
 
 

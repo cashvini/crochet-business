@@ -8,7 +8,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -48,7 +51,7 @@ public class ProductServiceTest
     }
 
     @Test
-    void findProductWithGivenID(){
+    void shouldFindProductByID(){
         Product product = new Product("frock",205.0, 4);
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
 
@@ -56,5 +59,20 @@ public class ProductServiceTest
 
         assertTrue(result.isPresent());
         assertEquals("frock",result.get().getName());
+    }
+
+    @Test
+    void shouldFindAllProducts(){
+        Product product1= new Product("frock",205.0, 4);
+        Product product2 = new Product("hat",50.0, 2);
+        List<Product> products = new ArrayList<>();
+        products.add(product1);
+        products.add(product2);
+        when(productRepository.findAll()).thenReturn(products);
+
+        List<Product> result = productService.findAllProducts();
+
+        assertEquals(2,result.size());
+        assertEquals("hat",result.get(1).getName());
     }
 }
