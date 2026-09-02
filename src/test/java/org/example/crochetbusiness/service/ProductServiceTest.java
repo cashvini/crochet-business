@@ -8,10 +8,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTest
@@ -44,5 +45,16 @@ public class ProductServiceTest
         );
 
         verify(productRepository, never()).save(any(Product.class));
+    }
+
+    @Test
+    void findProductWithGivenID(){
+        Product product = new Product("frock",205.0, 4);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+
+        Optional<Product> result = productService.findProductByID(1L);
+
+        assertTrue(result.isPresent());
+        assertEquals("frock",result.get().getName());
     }
 }
