@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -83,5 +82,29 @@ public class ProductServiceTest
         List<Product> result = productService.findAllProducts();
 
         assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void shouldUpdateProduct(){
+        Optional<Product> product= Optional.of(new Product("hat", 120.0, 2));
+        when(productRepository.findById(1L)).thenReturn(product);
+        productService.updateProduct(1L,"frock", 205.0, 4);
+
+        verify(productRepository).save(product.get());
+        assertEquals("frock",product.get().getName());
+        assertEquals(205.0,product.get().getPrice());
+        assertEquals(4,product.get().getStockQuantity());
+    }
+
+    @Test
+    void ShouldThrowExceptionIfNoProductFound(){
+        when(productRepository.findById(2L)).thenReturn(Optional.empty());
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> productService.updateProduct(2L,"frock", 205.0, 4));
+
+        verify(productRepository, never()).save(any(Product.class));
+
     }
 }
