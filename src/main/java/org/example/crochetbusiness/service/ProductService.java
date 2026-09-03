@@ -35,7 +35,21 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public void updateProduct(long id, String name,double price, int stockQuantity){
+        Product product = productRepository.findById(id).orElseThrow(()->new IllegalArgumentException("No product with given ID"));
 
+        product.setName(name);
+        product.setPrice(price);
+        product.setStockQuantity(stockQuantity);
+        productRepository.save(product);
+        }
+
+    public void updateProductName(long id, String name) {
+        Product product = productRepository.findById(id).orElseThrow(()->new IllegalArgumentException("No product with given ID"));
+
+        product.setName(name);
+        productRepository.save(product);
+    }
 
 }
 

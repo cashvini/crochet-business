@@ -107,4 +107,28 @@ public class ProductServiceTest
         verify(productRepository, never()).save(any(Product.class));
 
     }
+
+    @Test
+    void ShouldOnlyUpdateProductName(){
+        Optional<Product> product= Optional.of(new Product("hat", 120.0, 2));
+        when(productRepository.findById(1L)).thenReturn(product);
+        productService.updateProductName(1L,"frock");
+
+        verify(productRepository).save(product.get());
+        assertEquals("frock",product.get().getName());
+        assertEquals(120.0,product.get().getPrice());
+        assertEquals(2,product.get().getStockQuantity());
+    }
+
+    @Test
+    void ShouldThrowExceptionIfNoProductFoundTOChangeName(){
+        when(productRepository.findById(2L)).thenReturn(Optional.empty());
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> productService.updateProduct(2L,"frock", 205.0, 4));
+
+        verify(productRepository, never()).save(any(Product.class));
+
+    }
 }
