@@ -75,4 +75,13 @@ public class ProductServiceTest
         assertEquals(2,result.size());
         assertEquals("hat",result.get(1).getName());
     }
+
+    @Test
+    void shouldReturnEmptyListWhenNoProductsExist() {
+        when(productRepository.findAll()).thenReturn(List.of());
+
+        List<Product> result = productService.findAllProducts();
+
+        assertTrue(result.isEmpty());
+    }
 }
