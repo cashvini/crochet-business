@@ -129,6 +129,22 @@ public class ProductServiceTest
                 () -> productService.updateProduct(2L,"frock", 205.0, 4));
 
         verify(productRepository, never()).save(any(Product.class));
+    }
 
+    @Test
+    void ShouldDeleteProductIfExists(){
+        Optional<Product> product = Optional.of(new Product("hat", 120.0, 2));
+        when(productRepository.findById(1L)).thenReturn(product);
+
+        productService.deleteProduct(1L);
+        verify(productRepository).delete(product.get());
+    }
+
+    @Test
+    void shouldThrowErrorIfNoProduct(){
+        Optional<Product> product = Optional.of(new Product("hat", 120.0, 2));
+        when(productRepository.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(IllegalArgumentException.class,
+                () -> productService.deleteProduct(1L));
     }
 }

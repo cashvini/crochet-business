@@ -51,5 +51,13 @@ public class ProductService {
         productRepository.save(product);
     }
 
+    public String deleteProduct(long id){
+        Product product = productRepository.findById(id).orElseThrow(()->new IllegalArgumentException("No product with given ID"));
+
+            productRepository.delete(product);
+                return "product deleted";
+        }
+
+
 }
 
