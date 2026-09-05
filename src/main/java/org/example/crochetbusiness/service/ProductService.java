@@ -1,5 +1,6 @@
 package org.example.crochetbusiness.service;
 
+import org.example.crochetbusiness.Exception.ProductNotFoundException;
 import org.example.crochetbusiness.entity.Product;
 import org.example.crochetbusiness.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class ProductService {
     }
 
     public Optional<Product> findProductByID(long id){
-        return productRepository.findById(id);
+        return Optional.of(productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id)));
     }
 
     public List<Product> findAllProducts(){
@@ -36,7 +37,7 @@ public class ProductService {
     }
 
     public void updateProduct(long id, String name,double price, int stockQuantity){
-        Product product = productRepository.findById(id).orElseThrow(()->new IllegalArgumentException("No product with given ID"));
+        Product product = productRepository.findById(id).orElseThrow(()->new ProductNotFoundException(id));
 
         product.setName(name);
         product.setPrice(price);
@@ -45,14 +46,14 @@ public class ProductService {
         }
 
     public void updateProductName(long id, String name) {
-        Product product = productRepository.findById(id).orElseThrow(()->new IllegalArgumentException("No product with given ID"));
+        Product product = productRepository.findById(id).orElseThrow(()->new ProductNotFoundException(id));
 
         product.setName(name);
         productRepository.save(product);
     }
 
     public String deleteProduct(long id){
-        Product product = productRepository.findById(id).orElseThrow(()->new IllegalArgumentException("No product with given ID"));
+        Product product = productRepository.findById(id).orElseThrow(()->new ProductNotFoundException(id));
 
             productRepository.delete(product);
                 return "product deleted";

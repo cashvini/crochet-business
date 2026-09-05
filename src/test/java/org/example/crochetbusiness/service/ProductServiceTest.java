@@ -1,5 +1,6 @@
 package org.example.crochetbusiness.service;
 
+import org.example.crochetbusiness.Exception.ProductNotFoundException;
 import org.example.crochetbusiness.entity.Product;
 import org.example.crochetbusiness.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
@@ -144,7 +145,7 @@ public class ProductServiceTest
     void shouldThrowErrorIfNoProduct(){
         Optional<Product> product = Optional.of(new Product("hat", 120.0, 2));
         when(productRepository.findById(1L)).thenReturn(Optional.empty());
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ProductNotFoundException.class,
                 () -> productService.deleteProduct(1L));
     }
 }
