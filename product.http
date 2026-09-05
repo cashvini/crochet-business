@@ -3,7 +3,40 @@ GET https://examples.http-client.intellij.net/get
     ?generated-in=IntelliJ IDEA
 
 ###
-GET http://localhost:8080/products/
+POST http://localhost:8080/products
+Content-Type: application/json
+
+{
+  "name": "Pouch",
+  "price": 100.0,
+  "stockQuantity": 2
+}
+
+###
+GET http://localhost:8080/products
 
 ###
 GET http://localhost:8080/products/1
+
+###
+PUT http://localhost:8080/products/1
+
+###
+PUT http://localhost:8080/products/1
+Content-Type: application/json
+
+{
+  "name": "Baby Frock",
+  "price": 505.0,
+  "stockQuantity": 2
+}
+
+###
+PUT http://localhost:8080/products/1/name
+Content-Type: text/plain
+
+Granny square
+
+###
+DELETE http://localhost:8080/products/1
+
