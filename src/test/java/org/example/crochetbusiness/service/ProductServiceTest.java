@@ -62,6 +62,13 @@ public class ProductServiceTest
     }
 
     @Test
+    void shouldThrowErrorWhenNoFindProductByID(){
+        when(productRepository.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(ProductNotFoundException.class,
+                () -> productService.findProductByID(1L));
+    }
+
+    @Test
     void shouldFindAllProducts(){
         Product product1= new Product("frock",205.0, 4);
         Product product2 = new Product("hat",50.0, 2);
@@ -102,7 +109,7 @@ public class ProductServiceTest
         when(productRepository.findById(2L)).thenReturn(Optional.empty());
 
         assertThrows(
-                IllegalArgumentException.class,
+                ProductNotFoundException.class,
                 () -> productService.updateProduct(2L,"frock", 205.0, 4));
 
         verify(productRepository, never()).save(any(Product.class));
@@ -126,7 +133,7 @@ public class ProductServiceTest
         when(productRepository.findById(2L)).thenReturn(Optional.empty());
 
         assertThrows(
-                IllegalArgumentException.class,
+                ProductNotFoundException.class,
                 () -> productService.updateProduct(2L,"frock", 205.0, 4));
 
         verify(productRepository, never()).save(any(Product.class));
@@ -143,7 +150,6 @@ public class ProductServiceTest
 
     @Test
     void shouldThrowErrorIfNoProduct(){
-        Optional<Product> product = Optional.of(new Product("hat", 120.0, 2));
         when(productRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(ProductNotFoundException.class,
                 () -> productService.deleteProduct(1L));
