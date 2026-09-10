@@ -7,9 +7,20 @@ POST http://localhost:8080/products
 Content-Type: application/json
 
 {
-  "name": "Pouch",
+  "name": "Hat",
   "price": 100.0,
   "stockQuantity": 2
+}
+
+###
+
+POST http://localhost:8080/products
+Content-Type: application/json
+
+{
+  "name": "",
+  "price": -100.0,
+  "stockQuantity": -2
 }
 
 ###

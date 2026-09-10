@@ -28,6 +28,7 @@ public class ProductControllerTest {
     @MockitoBean
     private ProductService productService;
 
+    //addProduct method
     @Test
     void ShouldAddProduct() throws Exception {
 
@@ -43,6 +44,23 @@ public class ProductControllerTest {
         verify(productService).addProduct("Frock",205.0,4);
     }
 
+    //addProduct method error
+    @Test
+    void ShouldThrowErrorIfValuesFailValidation() throws Exception {
+
+        String requestBody = """
+            {
+              "name": "Frock",
+              "price": -205.0,
+              "stockQuantity": 4
+            }
+            """;
+        mockMvc.perform(post("/products").contentType(MediaType.APPLICATION_JSON).content(requestBody)).
+                andExpect(status().isOk());
+        verify(productService).;
+    }
+
+    //findAllProducts method
     @Test
     void shouldGetAllProducts() throws Exception {
 
@@ -59,6 +77,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$[1].name").value("Pouch"));
     }
 
+    //getProductByID method
     @Test
     void ShouldReturnProductWithID() throws Exception {
         Product product = new Product("Hair Band",50.0,10);
@@ -69,6 +88,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.stockQuantity").value(10));
     }
 
+    //getProductByID method error
     @Test
     void shouldReturn404WhenProductWithIDDoesNotExist() throws Exception {
 
@@ -79,6 +99,7 @@ public class ProductControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    //deleteProduct method
     @Test
     void shouldDeleteProduct() throws Exception{
 
@@ -90,6 +111,7 @@ public class ProductControllerTest {
         verify(productService).deleteProduct(1L);
     }
 
+    //deleteProduct error
     @Test
     void shouldReturn404WhenProductDoesNotExist() throws Exception {
 
@@ -100,6 +122,7 @@ public class ProductControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    //updateProduct() method
     @Test
     void shouldUpdateProduct() throws Exception{
         String requestBody = """
@@ -116,9 +139,9 @@ public class ProductControllerTest {
                 .andExpect(status().isOk());
 
         verify(productService).updateProduct(1L,"Frock",205.0,4);
-
     }
 
+    //updateProductName() method
     @Test
     void shouldUpdateProductName() throws Exception {
 

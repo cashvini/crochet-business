@@ -5,11 +5,11 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 public class ProdcutRequest {
 
-    @NotBlank
+    @NotBlank(message = "Name can not be blank")
     private String name;
-    @PositiveOrZero
+    @PositiveOrZero(message = "Price can not be negative")
     private double price;
-    @PositiveOrZero
+    @PositiveOrZero(message = "Stock value can not be negative")
     private int stockQuantity;
 
     public ProdcutRequest(String name, double price, int stockQuantity) {
