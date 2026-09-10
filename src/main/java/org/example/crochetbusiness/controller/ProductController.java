@@ -1,8 +1,11 @@
 package org.example.crochetbusiness.controller;
 
+import jakarta.validation.Valid;
 import org.example.crochetbusiness.entity.Product;
 import org.example.crochetbusiness.service.ProductService;
+import org.example.crochetbusiness.DTO.ProdcutRequest;
 import org.jspecify.annotations.NonNull;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +23,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public void addProduct(@RequestBody Product product){
-        productService.addProduct(product.getName(),product.getPrice(),product.getStockQuantity());
+    public void addProduct(@Valid @RequestBody ProdcutRequest productRequest){
+        productService.addProduct(productRequest.getName(),productRequest.getPrice(),productRequest.getStockQuantity());
     }
 
     @GetMapping

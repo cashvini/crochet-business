@@ -1,5 +1,6 @@
 package org.example.crochetbusiness.controller;
 
+import org.example.crochetbusiness.DTO.ProdcutRequest;
 import org.example.crochetbusiness.Exception.ProductNotFoundException;
 import org.example.crochetbusiness.entity.Product;
 import org.example.crochetbusiness.service.ProductService;
@@ -27,6 +28,20 @@ public class ProductControllerTest {
     @MockitoBean
     private ProductService productService;
 
+    @Test
+    void ShouldAddProduct() throws Exception {
+
+        String requestBody = """
+            {
+              "name": "Frock",
+              "price": 205.0,
+              "stockQuantity": 4
+            }
+            """;
+        mockMvc.perform(post("/products").contentType(MediaType.APPLICATION_JSON).content(requestBody)).
+                andExpect(status().isOk());
+        verify(productService).addProduct("Frock",205.0,4);
+    }
 
     @Test
     void shouldGetAllProducts() throws Exception {
