@@ -52,11 +52,11 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public String deleteProduct(long id){
+    public void deleteProduct(long id){
         Product product = productRepository.findById(id).orElseThrow(()->new ProductNotFoundException(id));
 
             productRepository.delete(product);
-                return "product deleted";
+
         }
 
 

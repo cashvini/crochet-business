@@ -16,6 +16,13 @@ public class Product {
     @Column(nullable = false)
     private int stockQuantity;
 
+    public Product(long id, String name, double price,int stockQuantity) {
+        this.id = id;
+        this.name = name;
+        this.stockQuantity = stockQuantity;
+        this.price = price;
+    }
+
     public Product(String name, double price, int stockQuantity) {
         this.name = name;
         this.price = price;

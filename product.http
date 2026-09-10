@@ -27,13 +27,16 @@ Content-Type: application/json
 GET http://localhost:8080/products
 
 ###
-GET http://localhost:8080/products/1
+GET http://localhost:8080/products/5
 
 ###
-PUT http://localhost:8080/products/1
+GET http://localhost:8080/products/99
 
 ###
-PUT http://localhost:8080/products/1
+PUT http://localhost:8080/products/5
+
+###
+PUT http://localhost:8080/products/6
 Content-Type: application/json
 
 {
@@ -49,5 +52,11 @@ Content-Type: text/plain
 Granny square
 
 ###
-DELETE http://localhost:8080/products/1
+PUT http://localhost:8080/products/5/name
+Content-Type: text/plain
+
+Frock
+
+###
+DELETE http://localhost:8080/products/5
 

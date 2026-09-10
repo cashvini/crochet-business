@@ -40,8 +40,8 @@ public class ProductControllerTest {
               "stockQuantity": 4
             }
             """;
-        mockMvc.perform(post("/products").contentType(MediaType.APPLICATION_JSON).content(requestBody)).
-                andExpect(status().isOk());
+        mockMvc.perform(post("/products").contentType(MediaType.APPLICATION_JSON).content(requestBody))
+                .andExpect(status().isCreated());
         verify(productService).addProduct("Frock",205.0,4);
     }
 
@@ -83,9 +83,10 @@ public class ProductControllerTest {
     //getProductByID method
     @Test
     void ShouldReturnProductWithID() throws Exception {
-        Product product = new Product("Hair Band",50.0,10);
-        when(productService.findProductByID(1l)).thenReturn(Optional.of(product));
+        Product product = new Product(1L,"Hair Band",50.0,10);
+        when(productService.findProductByID(1L)).thenReturn(Optional.of(product));
         mockMvc.perform(get("/products/1")).andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.name").value("Hair Band"))
                 .andExpect(jsonPath("$.price").value(50.0))
                 .andExpect(jsonPath("$.stockQuantity").value(10));
@@ -106,10 +107,9 @@ public class ProductControllerTest {
     @Test
     void shouldDeleteProduct() throws Exception{
 
-        when(productService.deleteProduct(1L)).thenReturn("product deleted");
+        //when(productService.deleteProduct(1L)).thenReturn("product deleted");
         mockMvc.perform(delete("/products/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("product deleted"));
+                .andExpect(status().isNoContent());
 
         verify(productService).deleteProduct(1L);
     }
@@ -117,10 +117,9 @@ public class ProductControllerTest {
     //deleteProduct error
     @Test
     void shouldReturn404WhenProductDoesNotExist() throws Exception {
-
-        when(productService.deleteProduct(99L))
-                .thenThrow(new ProductNotFoundException(99L));
-
+        doThrow(new ProductNotFoundException(99L))
+                .when(productService)
+                .deleteProduct(99L);
         mockMvc.perform(delete("/products/99"))
                 .andExpect(status().isNotFound());
     }
