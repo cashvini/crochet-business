@@ -10,6 +10,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,14 +51,16 @@ public class ProductControllerTest {
 
         String requestBody = """
             {
-              "name": "Frock",
+              "name": "",
               "price": -205.0,
-              "stockQuantity": 4
+              "stockQuantity": -4
             }
             """;
-        mockMvc.perform(post("/products").contentType(MediaType.APPLICATION_JSON).content(requestBody)).
-                andExpect(status().isOk());
-        verify(productService).;
+        mockMvc.perform(post("/products").contentType(MediaType.APPLICATION_JSON).content(requestBody)).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name").value("Name can not be blank"))
+                .andExpect(jsonPath("$.price").value("Price can not be negative"))
+                .andExpect(jsonPath("$.stockQuantity").value("Stock value can not be negative"));
+        verify(productService,never()).addProduct(anyString(),anyDouble(),anyInt());
     }
 
     //findAllProducts method
